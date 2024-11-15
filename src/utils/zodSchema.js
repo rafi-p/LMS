@@ -17,3 +17,7 @@ export const createCourseSchema = z.object({
     .any()
     .refine((file) => file?.name, { message: "Thumbnail is required" }),
 });
+
+export const updateCourseSchema = createCourseSchema.partial({
+  thumbnail: true,
+});
