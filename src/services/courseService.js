@@ -28,3 +28,7 @@ export const updateCourse = async (data, id) => {
     })
     .then((res) => res.data);
 };
+
+export const deleteCourse = async (id) => {
+  return apiInstanceAuth.delete(`/courses/${id}`).then((res) => res.data);
+};
