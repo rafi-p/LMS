@@ -17,6 +17,7 @@ import {
   getCategories,
   getCourseDetail,
   getCourses,
+  getDetailContent,
 } from "../services/courseService";
 
 const router = createBrowserRouter([
@@ -86,6 +87,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/manager/courses/:id",
+        loader: async ({ params }) => {
+          const course = await getCourseDetail(params.id);
+
+          return course?.data;
+        },
         element: <ManageCourseDetailPage />,
       },
       {
@@ -93,7 +99,21 @@ const router = createBrowserRouter([
         element: <ManageContentCreatePage />,
       },
       {
+        path: "/manager/courses/:id/edit/:contentId",
+        loader: async ({ params }) => {
+          const content = await getDetailContent(params.contentId);
+
+          return content?.data;
+        },
+        element: <ManageContentCreatePage />,
+      },
+      {
         path: "/manager/courses/:id/preview",
+        loader: async ({ params }) => {
+          const course = await getCourseDetail(params.id, true);
+
+          return course?.data;
+        },
         element: <ManageCoursePreviewPage />,
       },
       {
