@@ -52,3 +52,17 @@ export const mutateContentSchema = z
       }
     }
   });
+
+export const createStudentSchema = z.object({
+  name: z.string().min(5),
+  email: z.string().email(),
+  password: z.string().min(5),
+  photo: z
+    .any()
+    .refine((file) => file?.name, { message: "Avatar is required" }),
+});
+
+export const editStudentSchema = createStudentSchema.omit({
+  password: true,
+  photo: true,
+});
