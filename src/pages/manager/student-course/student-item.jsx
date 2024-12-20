@@ -1,19 +1,20 @@
 import React from "react";
-import { Link, useRevalidator } from "react-router-dom";
+import { useParams, useRevalidator } from "react-router-dom";
 import Proptypes from "prop-types";
 import { useMutation } from "@tanstack/react-query";
-import { deleteStudent } from "../../../services/studentService";
+import { deleteStudentsCourse } from "../../../services/courseService";
 
 export default function StudentItem({
   imageUrl = "/assets/images/photos/photo-3.png",
   name = "Angga Risky Setiawan",
-  totalCourse = 0,
   id = 1,
 }) {
   const revallidator = useRevalidator();
 
+  const params = useParams();
+
   const { isLoading, mutateAsync } = useMutation({
-    mutationFn: () => deleteStudent(id),
+    mutationFn: () => deleteStudentsCourse({ studentId: id }, params.id),
   });
 
   const handleDelete = async () => {
@@ -39,24 +40,8 @@ export default function StudentItem({
         <h3 className="font-bold text-xl leading-[30px] line-clamp-1">
           {name}
         </h3>
-        <div className="flex items-center gap-5">
-          <div className="flex items-center gap-[6px] mt-[6px]">
-            <img
-              src="/assets/images/icons/note-favorite-purple.svg"
-              className="w-5 h-5"
-              alt="icon"
-            />
-            <p className="text-[#838C9D]">{totalCourse} Course Joined</p>
-          </div>
-        </div>
       </div>
       <div className="flex justify-end items-center gap-3">
-        <Link
-          to={`/manager/students/edit/${id}`}
-          className="w-fit rounded-full border border-[#060A23] p-[14px_20px] font-semibold text-nowrap"
-        >
-          Edit Profile
-        </Link>
         <button
           type="button"
           disabled={isLoading}
