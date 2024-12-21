@@ -24,6 +24,7 @@ import ManageStudentCreatePage from "../pages/manager/students-create";
 import { getDetailStudent, getStudents } from "../services/studentService";
 import StudentCourseList from "../pages/manager/student-course";
 import StudentForm from "../pages/manager/student-course/student-form";
+import { getOverviews } from "../services/overviewService";
 
 const router = createBrowserRouter([
   {
@@ -32,10 +33,30 @@ const router = createBrowserRouter([
   },
   {
     path: "/manager/sign-in",
+
+    loader: async () => {
+      const session = secureLocalStorage.getItem(STORAGE_KEY);
+
+      if (session && session.role === "manager") {
+        throw redirect("/manager");
+      }
+
+      return true;
+    },
     element: <SignInPage />,
   },
   {
     path: "/manager/sign-up",
+
+    loader: async () => {
+      const session = secureLocalStorage.getItem(STORAGE_KEY);
+
+      if (session && session.role === "manager") {
+        throw redirect("/manager");
+      }
+
+      return true;
+    },
     element: <SignUpPage />,
   },
   {
@@ -58,6 +79,11 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
+        loader: async () => {
+          const overviews = await getOverviews();
+
+          return overviews?.data;
+        },
         element: <ManagerHomePage />,
       },
       {
