@@ -29,7 +29,6 @@ apiInstanceAuth.interceptors.response.use(
       window.location.replace("/manager/sign-in");
       secureLocalStorage.removeItem(STORAGE_KEY);
     }
-
     return Promise.reject("Err");
   }
 );

@@ -1,17 +1,17 @@
 import React from "react";
 import { Link, useRouteLoaderData } from "react-router-dom";
 import secureLocalStorage from "react-secure-storage";
-import { MANAGER_SESSION, STORAGE_KEY } from "../utils/const";
+import { MANAGER_SESSION, STUDENT_SESSION, STORAGE_KEY } from "../utils/const";
 
-export default function Header() {
-  const session = useRouteLoaderData(MANAGER_SESSION);
-
-  console.log(session);
+export default function Header({ type = "manager" }) {
+  const session = useRouteLoaderData(
+    type === "manager" ? MANAGER_SESSION : STUDENT_SESSION
+  );
 
   const handleLogout = () => {
     secureLocalStorage.removeItem(STORAGE_KEY);
 
-    window.location.replace("/manager/sign-in");
+    window.location.replace(`/${type}/sign-in`);
   };
   return (
     <div id="TopBar" className="flex items-center justify-between gap-[30px]">
@@ -52,7 +52,7 @@ export default function Header() {
         </button>
         <div
           id="ProfileDropdown"
-          className="absolute top-full hidden group-hover:block"
+          className="absolute top-full hidden group-hover:block z-30"
         >
           <ul className="flex flex-col w-[200px] rounded-[20px] border border-[#CFDBEF] p-5 gap-4 bg-white mt-4">
             <li className="font-semibold">
